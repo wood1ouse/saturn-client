@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { FlightsRawResponse, FlightsState, FlightStateProperties } from '../../../models/api';
+import {
+  AppDataSources,
+  FlightsRawResponse,
+  FlightsState,
+  FlightStateProperties
+} from '../../../models/api';
 import { FeatureCollection, Point } from 'geojson';
+import DataStore from '../../../store/DataStore';
+import { observer } from 'mobx-react';
 
 const WS_URL = 'ws://localhost:8080';
 
-export const FlightsLayer: React.FC = () => {
+export const FlightsLayer: React.FC = observer(() => {
+  const { isDataSourceEnabled } = DataStore;
+
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket<FlightsRawResponse>(
-    WS_URL,
+    isDataSourceEnabled(AppDataSources.OPEN_SKY_NETWORK) ? WS_URL : null,
     {
       share: false,
       shouldReconnect: () => true
@@ -33,6 +42,8 @@ export const FlightsLayer: React.FC = () => {
 
   // When WebSocket is open, send a subscribe message
   useEffect(() => {
+    DataStore.setSocketConnectionState(AppDataSources.OPEN_SKY_NETWORK, readyState);
+
     if (readyState === ReadyState.OPEN) {
       sendJsonMessage({
         event: 'subscribe'
@@ -73,4 +84,4 @@ export const FlightsLayer: React.FC = () => {
       </Source>
     )
   );
-};
+});

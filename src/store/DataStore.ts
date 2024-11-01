@@ -8,12 +8,12 @@ class DataStore {
     [AppDataSources.OPEN_SKY_NETWORK]: {
       enabled: false,
       expanded: false,
-      connection: ReadyState.CLOSED
+      connection: ReadyState.UNINSTANTIATED
     },
     [AppDataSources.OPEN_WEATHER]: {
       enabled: false,
       expanded: false,
-      connection: ReadyState.CLOSED
+      connection: ReadyState.UNINSTANTIATED
     }
   };
 
@@ -37,6 +37,16 @@ class DataStore {
     };
   }
 
+  get dataSourceConnectionState(): (source: AppDataSources) => ReadyState {
+    return (source) => {
+      if (!this.dataSources) return ReadyState.CLOSED;
+
+      const datasource = this.dataSources[source];
+
+      return datasource.connection;
+    };
+  }
+
   toggleDataSource(source: AppDataSources) {
     if (!this.dataSources) return;
 
@@ -47,8 +57,6 @@ class DataStore {
         enabled: !this.dataSources[source].enabled
       }
     };
-
-    console.log(this.dataSources);
   }
 
   toggleExpandDataSource(source: AppDataSources) {
@@ -61,8 +69,18 @@ class DataStore {
         expanded: !this.dataSources[source].expanded
       }
     };
+  }
 
-    console.log(this.dataSources);
+  setSocketConnectionState(source: AppDataSources, state: ReadyState) {
+    if (!this.dataSources) return;
+
+    this.dataSources = {
+      ...this.dataSources,
+      [source]: {
+        ...this.dataSources[source],
+        connection: state
+      }
+    };
   }
 
   constructor() {

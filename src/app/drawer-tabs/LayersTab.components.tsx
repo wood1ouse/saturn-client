@@ -2,11 +2,15 @@ import styled from './LayersTab.styled';
 
 const { Circle } = styled;
 
-export const ConnectionStatus: React.FC = () => {
+interface Props {
+  color: 'success' | 'warning' | 'error';
+}
+
+export const ConnectionStatus: React.FC<Props> = ({ color }) => {
   return (
     <Circle
       sx={{
-        backgroundColor: ({ palette }) => palette.error.main
+        backgroundColor: ({ palette }) => palette[color].main
       }}
     />
   );
