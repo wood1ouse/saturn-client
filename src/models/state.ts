@@ -8,3 +8,11 @@ export interface DataSourceState {
 }
 
 export type DataSourcesState = Record<AppDataSources, DataSourceState>;
+
+interface FlightsSettings {
+  opacity: number;
+}
+
+export interface LayerSettingsState {
+  [AppDataSources.OPEN_SKY_NETWORK]: FlightsSettings;
+}

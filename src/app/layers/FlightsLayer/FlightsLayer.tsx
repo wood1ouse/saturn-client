@@ -9,12 +9,14 @@ import {
 } from '../../../models/api';
 import { FeatureCollection, Point } from 'geojson';
 import DataStore from '../../../store/DataStore';
+import LayerStore from '../../../store/LayerStore';
 import { observer } from 'mobx-react';
 
 const WS_URL = 'ws://localhost:8080';
 
 export const FlightsLayer: React.FC = observer(() => {
   const { isDataSourceEnabled } = DataStore;
+  const { flightsOpacity } = LayerStore;
 
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket<FlightsRawResponse>(
     isDataSourceEnabled(AppDataSources.OPEN_SKY_NETWORK) ? WS_URL : null,
@@ -78,7 +80,8 @@ export const FlightsLayer: React.FC = observer(() => {
             'icon-size': 0.5
           }}
           paint={{
-            'icon-color': '#ffffff'
+            'icon-color': '#ffffff',
+            'icon-opacity': flightsOpacity
           }}
         />
       </Source>
