@@ -7,12 +7,10 @@ class DataStore {
   dataSources: DataSourcesState = {
     [AppDataSources.OPEN_SKY_NETWORK]: {
       enabled: false,
-      expanded: false,
       connection: ReadyState.UNINSTANTIATED
     },
     [AppDataSources.OPEN_WEATHER]: {
       enabled: false,
-      expanded: false,
       connection: ReadyState.UNINSTANTIATED
     }
   };
@@ -21,19 +19,7 @@ class DataStore {
     return (source) => {
       if (!this.dataSources) return false;
 
-      const datasource = this.dataSources[source];
-
-      return datasource.enabled;
-    };
-  }
-
-  get isDataSourceExpanded(): (source: AppDataSources) => boolean {
-    return (source) => {
-      if (!this.dataSources) return false;
-
-      const datasource = this.dataSources[source];
-
-      return datasource.expanded;
+      return this.dataSources[source].enabled;
     };
   }
 
@@ -50,37 +36,13 @@ class DataStore {
   toggleDataSource(source: AppDataSources) {
     if (!this.dataSources) return;
 
-    this.dataSources = {
-      ...this.dataSources,
-      [source]: {
-        ...this.dataSources[source],
-        enabled: !this.dataSources[source].enabled
-      }
-    };
-  }
-
-  toggleExpandDataSource(source: AppDataSources) {
-    if (!this.dataSources) return;
-
-    this.dataSources = {
-      ...this.dataSources,
-      [source]: {
-        ...this.dataSources[source],
-        expanded: !this.dataSources[source].expanded
-      }
-    };
+    this.dataSources[source].enabled = !this.dataSources[source].enabled;
   }
 
   setSocketConnectionState(source: AppDataSources, state: ReadyState) {
     if (!this.dataSources) return;
 
-    this.dataSources = {
-      ...this.dataSources,
-      [source]: {
-        ...this.dataSources[source],
-        connection: state
-      }
-    };
+    this.dataSources[source].connection = state;
   }
 
   constructor() {

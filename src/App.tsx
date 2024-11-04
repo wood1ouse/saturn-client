@@ -8,10 +8,18 @@ import React, { useRef, useEffect } from 'react';
 import { MapDrawer } from './app/MapDrawer/MapDrawer';
 import { observer } from 'mobx-react';
 import UIStore from './store/UIStore';
+import HistoricalStore from './store/HistoricalStore.ts';
 import { FlightsLayer } from './app/layers/FlightsLayer/FlightsLayer.tsx';
+import { FlightsHistoricalAPI } from './api/FlightsHistroicalAPI.ts';
+import { AppDataSources } from './models/api.ts';
+
+function setTimestamps(source: AppDataSources, value: number[]) {
+  HistoricalStore.setTimestamps(source, value);
+}
 
 const App: React.FC = observer(() => {
   const { isDrawerOpened } = UIStore;
+
   const mapRef = useRef<MapRef>(null);
 
   useEffect(() => {
@@ -23,6 +31,15 @@ const App: React.FC = observer(() => {
     }
   }, [isDrawerOpened]);
 
+  useEffect(() => {
+    const fetchTimestamps = async () => {
+      const result = await FlightsHistoricalAPI.getTimestamps();
+      setTimestamps(AppDataSources.OPEN_SKY_NETWORK, result);
+    };
+
+    fetchTimestamps();
+  }, []);
+
   return (
     <>
       <CssBaseline />
@@ -33,8 +50,7 @@ const App: React.FC = observer(() => {
               display: 'flex',
               width: '100vw',
               height: '100vh'
-            }}
-          >
+            }}>
             <MapDrawer />
             <Map
               ref={mapRef}
@@ -45,8 +61,7 @@ const App: React.FC = observer(() => {
                 zoom: 3
               }}
               style={{ width: '100%', height: '100%' }}
-              mapStyle="mapbox://styles/mapbox/dark-v11"
-            >
+              mapStyle="mapbox://styles/mapbox/dark-v11">
               <FlightsLayer />
             </Map>
           </Box>

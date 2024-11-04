@@ -11,11 +11,13 @@ import { FeatureCollection, Point } from 'geojson';
 import DataStore from '../../../store/DataStore';
 import LayerStore from '../../../store/LayerStore';
 import { observer } from 'mobx-react';
+import HistoricalStore from '../../../store/HistoricalStore';
 
 const WS_URL = 'ws://localhost:8080';
 
 export const FlightsLayer: React.FC = observer(() => {
   const { isDataSourceEnabled } = DataStore;
+  const { source } = HistoricalStore;
   const { flightsOpacity } = LayerStore;
 
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket<FlightsRawResponse>(
@@ -27,6 +29,8 @@ export const FlightsLayer: React.FC = observer(() => {
   );
 
   const [flightsState, setFlightsState] = useState<FlightsState | null>(null);
+
+  const { live, geojson: historicalGeojson } = source(AppDataSources.OPEN_SKY_NETWORK);
 
   const { current: map } = useMap();
 
@@ -42,7 +46,6 @@ export const FlightsLayer: React.FC = observer(() => {
     }
   }, [map]);
 
-  // When WebSocket is open, send a subscribe message
   useEffect(() => {
     DataStore.setSocketConnectionState(AppDataSources.OPEN_SKY_NETWORK, readyState);
 
@@ -53,9 +56,8 @@ export const FlightsLayer: React.FC = observer(() => {
     }
   }, [readyState, sendJsonMessage]);
 
-  // When a new WebSocket message is received, update flight data
   useEffect(() => {
-    if (lastJsonMessage) {
+    if (lastJsonMessage && live) {
       const geojson: FeatureCollection<Point, FlightStateProperties> = JSON.parse(
         lastJsonMessage.geojson
       );
@@ -65,26 +67,25 @@ export const FlightsLayer: React.FC = observer(() => {
         geojson
       });
     }
-  }, [lastJsonMessage]);
+  }, [lastJsonMessage, live]);
 
   return (
-    flightsState &&
-    flightsState.geojson && (
-      <Source id="flight-data" type="geojson" data={flightsState.geojson}>
-        <Layer
-          id="points"
-          type="symbol"
-          layout={{
-            'icon-image': 'custom-icon',
-            'icon-rotate': ['get', 'true_track'],
-            'icon-size': 0.5
-          }}
-          paint={{
-            'icon-color': '#ffffff',
-            'icon-opacity': flightsOpacity
-          }}
-        />
-      </Source>
-    )
+    <Source
+      id="flight-data"
+      type="geojson"
+      data={live && flightsState ? flightsState.geojson : historicalGeojson}>
+      <Layer
+        id="points"
+        type="symbol"
+        layout={{
+          'icon-image': 'custom-icon',
+          'icon-rotate': ['get', 'true_track'],
+          'icon-size': 0.5
+        }}
+        paint={{
+          'icon-opacity': flightsOpacity
+        }}
+      />
+    </Source>
   );
 });

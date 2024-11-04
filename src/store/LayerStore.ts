@@ -11,13 +11,7 @@ class LayerStore {
   };
 
   changeFlightsOpacity(value: number) {
-    this.layers = {
-      ...this.layers,
-      [AppDataSources.OPEN_SKY_NETWORK]: {
-        ...this.layers[AppDataSources.OPEN_SKY_NETWORK],
-        opacity: value
-      }
-    };
+    this.layers[AppDataSources.OPEN_SKY_NETWORK].opacity = value;
   }
 
   get flightsOpacity() {

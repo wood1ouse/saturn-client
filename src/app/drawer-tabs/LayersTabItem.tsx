@@ -8,13 +8,14 @@ import { ConnectionStatus } from './LayersTab.components';
 import { px } from '../../utils/ui';
 import { AppDataSources } from '../../models/api';
 import { UIService } from '../../services/UIService';
+import UIStore from '../../store/UIStore';
 
 function toggleDataSource(source: AppDataSources) {
   DataStore.toggleDataSource(source);
 }
 
 function toggleExpandDataSource(source: AppDataSources) {
-  DataStore.toggleExpandDataSource(source);
+  UIStore.toggleExpandDataSource(source);
 }
 
 interface Props {
@@ -24,7 +25,8 @@ interface Props {
 
 export const LayersTabItem: React.FC<PropsWithChildren<Props>> = observer(
   ({ name, source, children }) => {
-    const { isDataSourceEnabled, isDataSourceExpanded, dataSourceConnectionState } = DataStore;
+    const { isDataSourceEnabled, dataSourceConnectionState } = DataStore;
+    const { isDataSourceExpanded } = UIStore;
 
     return (
       <Stack direction="row" justifyContent="center" alignItems="center" gap={1}>
