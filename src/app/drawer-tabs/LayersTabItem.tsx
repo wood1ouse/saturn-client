@@ -45,7 +45,8 @@ export const LayersTabItem: React.FC<PropsWithChildren<Props>> = observer(
               onClick={() => {
                 toggleExpandDataSource(source);
               }}
-              disabled={!isDataSourceEnabled(source)}>
+              disabled={!isDataSourceEnabled(source)}
+            >
               {isDataSourceExpanded(source) ? <ExpandLessRounded /> : <ExpandMoreRounded />}
             </IconButton>
           </Stack>

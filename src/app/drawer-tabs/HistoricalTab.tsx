@@ -96,7 +96,8 @@ export const HistoricalTab: React.FC = observer(() => {
           <Collapse
             in={isDataSourceExpanded(AppDataSources.OPEN_SKY_NETWORK)}
             timeout="auto"
-            unmountOnExit>
+            unmountOnExit
+          >
             <StaticDateTimePicker
               value={moment(time)}
               disabled={live}

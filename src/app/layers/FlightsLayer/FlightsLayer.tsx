@@ -73,7 +73,8 @@ export const FlightsLayer: React.FC = observer(() => {
     <Source
       id="flight-data"
       type="geojson"
-      data={live && flightsState ? flightsState.geojson : historicalGeojson}>
+      data={live && flightsState ? flightsState.geojson : historicalGeojson}
+    >
       <Layer
         id="points"
         type="symbol"
