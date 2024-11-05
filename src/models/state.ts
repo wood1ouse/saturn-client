@@ -27,3 +27,9 @@ export interface HistoricalState {
 }
 
 export type LayerHistoricalState = Record<AppDataSources, HistoricalState>;
+
+export type MapCursorState = 'grab' | 'pointer';
+
+export interface MapState {
+  cursor: MapCursorState;
+}

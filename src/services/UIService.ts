@@ -29,4 +29,12 @@ export class UIService {
         return assertNever(state);
     }
   }
+
+  static formatTableValue(value: string | number | boolean | null): string {
+    if (typeof value === 'object') return 'N/A';
+    if (typeof value === 'boolean') {
+      return value === true ? 'Positive' : 'Negative';
+    }
+    return value.toString();
+  }
 }

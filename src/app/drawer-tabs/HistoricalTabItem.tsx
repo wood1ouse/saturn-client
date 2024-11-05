@@ -34,11 +34,12 @@ function setHistoricalGeoJSON(source: AppDataSources, value: FeatureCollection) 
 }
 
 interface Props {
+  name: string;
   dataSource: AppDataSources;
   getTimePositions: (timestamp: number) => Promise<FeatureCollection>;
 }
 
-export const HistoricalTabItem: React.FC<Props> = observer(({ dataSource, getTimePositions }) => {
+export const HistoricalTabItem: React.FC<Props> = observer(({ name, dataSource, getTimePositions }) => {
   const { isDataSourceExpanded } = UIStore;
   const { source } = HistoricalStore;
 
@@ -86,7 +87,7 @@ export const HistoricalTabItem: React.FC<Props> = observer(({ dataSource, getTim
           {live ? <PauseRoundedIcon /> : <PlayArrowRoundedIcon />}
         </IconButton>
         <Stack direction="row" alignItems="center" p={1.5}>
-          OpenSky API Network
+          { name }
         </Stack>
         <IconButton onClick={() => toggleExpandDataSource(dataSource)}>
           {isDataSourceExpanded(dataSource) ? <ExpandLessRounded /> : <ExpandMoreRounded />}

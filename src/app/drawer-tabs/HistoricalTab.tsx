@@ -14,6 +14,7 @@ export const HistoricalTab: React.FC = observer(() => {
     <TabContainer>
       <Stack justifyContent="center" alignItems="center" gap={2}>
         <HistoricalTabItem
+          name="OpenSky API Network"
           dataSource={AppDataSources.OPEN_SKY_NETWORK}
           getTimePositions={FlightsHistoricalAPI.getFlightPositionsForTime}
         />
