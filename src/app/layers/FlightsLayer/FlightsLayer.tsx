@@ -13,6 +13,7 @@ import LayerStore from '../../../store/LayerStore';
 import { observer } from 'mobx-react';
 import HistoricalStore from '../../../store/HistoricalStore';
 import FlightsStore from '../../../store/FlightsStore';
+import UIStore from '../../../store/UIStore';
 
 const WS_URL = 'ws://localhost:8080';
 
@@ -25,6 +26,8 @@ export const FlightsLayer: React.FC = observer(() => {
   const { source } = HistoricalStore;
   const { flightsOpacity } = LayerStore;
   const { activeFlight } = FlightsStore;
+
+  const { theme } = UIStore;
 
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket<FlightsRawResponse>(
     isDataSourceEnabled(AppDataSources.OPEN_SKY_NETWORK) ? WS_URL : null,
@@ -40,24 +43,27 @@ export const FlightsLayer: React.FC = observer(() => {
 
   const { current: map } = useMap();
 
-  useEffect(() => {
+  const loadIcons = () => {
     if (map) {
-      map.loadImage('/aircraft.png', (error, image) => {
-        if (error) throw error;
+      const aircraft = theme === 'dark' ? '/aircraft.png' : '/aircraft_light.png';
 
-        if (image && !map.hasImage('aircraft-icon')) {
-          map.addImage('aircraft-icon', image);
-        }
+      map.loadImage(aircraft, (error, image) => {
+        if (error) throw error;
+        if (image && !map.hasImage('aircraft-icon')) map.addImage('aircraft-icon', image);
       });
       map.loadImage('/active_aircraft.png', (error, image) => {
         if (error) throw error;
-
-        if (image && !map.hasImage('active-aircraft-icon')) {
+        if (image && !map.hasImage('active-aircraft-icon'))
           map.addImage('active-aircraft-icon', image);
-        }
       });
     }
-  }, [map]);
+  };
+
+  useEffect(() => {
+    loadIcons();
+
+    map?.on('styledata', loadIcons);
+  }, [map, theme]);
 
   useEffect(() => {
     DataStore.setSocketConnectionState(AppDataSources.OPEN_SKY_NETWORK, readyState);

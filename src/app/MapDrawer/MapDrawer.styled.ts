@@ -1,4 +1,10 @@
-import { Button, styled, ToggleButton as MuiToggleButton } from '@mui/material';
+import {
+  Button,
+  styled,
+  ToggleButton as MuiToggleButton,
+  IconButton as MuiIconButton
+} from '@mui/material';
+import { px } from '../../utils/ui';
 
 const CollapseButton = styled(Button)`
   position: absolute;
@@ -18,7 +24,16 @@ const ToggleButton = styled(MuiToggleButton)`
   height: 48px;
 `;
 
+const ThemeButton = styled(MuiIconButton)`
+  position: absolute;
+  bottom: ${px(24)};
+  width: ${px(42)};
+  height: ${px(42)};
+  right: ${px(12)};
+`;
+
 export default {
   CollapseButton,
-  ToggleButton
+  ToggleButton,
+  ThemeButton
 };

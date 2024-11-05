@@ -1,7 +1,7 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Map, { MapRef } from 'react-map-gl';
 import { Box, CssBaseline, ThemeProvider } from '@mui/material';
-import { theme } from './theme';
+import { darkTheme, lightTheme } from './theme';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import React, { useRef, useEffect } from 'react';
@@ -37,7 +37,7 @@ function setActiveFlight(flight: Feature<Point, FlightStateProperties>) {
 }
 
 const App: React.FC = observer(() => {
-  const { isDrawerOpened } = UIStore;
+  const { isDrawerOpened, theme } = UIStore;
   const { cursor } = MapStore;
 
   const mapRef = useRef<MapRef>(null);
@@ -63,7 +63,7 @@ const App: React.FC = observer(() => {
   return (
     <>
       <CssBaseline />
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <Box
             sx={{
@@ -81,7 +81,14 @@ const App: React.FC = observer(() => {
                 zoom: 3
               }}
               style={{ width: '100%', height: '100%' }}
-              mapStyle="mapbox://styles/mapbox/dark-v11"
+              mapStyle={
+                theme === 'dark'
+                  ? 'mapbox://styles/mapbox/dark-v11'
+                  : 'mapbox://styles/mapbox/light-v11'
+              }
+              onStyleData={() => {
+                console.log('LOADED');
+              }}
               interactiveLayerIds={['flights-layer']}
               onMouseEnter={(event) => {
                 const feature = event.features && event.features[0];

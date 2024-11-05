@@ -2,8 +2,11 @@ import { AppDataSources } from './../models/api';
 import { makeAutoObservable } from 'mobx';
 import { DrawerTabs } from '../models/ui';
 import { ExpandedState } from '../models/state';
+import { PaletteMode } from '@mui/material';
 
 class UIStore {
+  theme: PaletteMode = 'dark';
+
   isDrawerOpened = false;
 
   drawerTab: DrawerTabs = DrawerTabs.LAYERS;
@@ -21,6 +24,10 @@ class UIStore {
     return (source) => {
       return this.layerSettingsExpanded[source];
     };
+  }
+
+  toggleTheme() {
+    this.theme = this.theme === 'dark' ? 'light' : 'dark';
   }
 
   toggleExpandDataSource(source: AppDataSources) {
