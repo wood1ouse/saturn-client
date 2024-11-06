@@ -5,11 +5,14 @@ import { ExpandMoreRounded } from '@mui/icons-material';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
+import InsightsIcon from '@mui/icons-material/Insights';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { LayersTab } from '../drawer-tabs/LayersTab';
 import { UIService } from '../../services/UIService';
 import { HistoricalTab } from '../drawer-tabs/HistoricalTab';
+import { AnalysisTab } from '../drawer-tabs/AnalysisTab';
+
 import { px } from '../../utils/ui';
 import UIStore from '../../store/UIStore';
 import { DrawerTabs } from '../../models/ui';
@@ -57,6 +60,11 @@ export const MapDrawer: React.FC = observer(() => {
             onClick={() => handleTabClick(DrawerTabs.HISTORICAL)}>
             <HistoryRoundedIcon />
           </ToggleButton>
+          <ToggleButton
+            value={DrawerTabs.ANALYSIS}
+            onClick={() => handleTabClick(DrawerTabs.ANALYSIS)}>
+            <InsightsIcon />
+          </ToggleButton>
         </ToggleButtonGroup>
 
         {isDrawerOpened && (
@@ -68,6 +76,7 @@ export const MapDrawer: React.FC = observer(() => {
             <>
               {drawerTab === DrawerTabs.LAYERS && <LayersTab />}
               {drawerTab === DrawerTabs.HISTORICAL && <HistoricalTab />}
+              {drawerTab === DrawerTabs.ANALYSIS && <AnalysisTab />}
             </>
           </Stack>
         )}

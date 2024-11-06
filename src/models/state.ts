@@ -1,5 +1,5 @@
 import { ReadyState } from 'react-use-websocket';
-import { AppDataSources } from './api.ts';
+import { AppDataSources, FlightStateProperties } from './api.ts';
 import { FeatureCollection } from 'geojson';
 
 export interface DataSourceState {
@@ -32,4 +32,18 @@ export type MapCursorState = 'grab' | 'pointer';
 
 export interface MapState {
   cursor: MapCursorState;
+}
+
+export interface AnalyisDialogState {
+  open: boolean;
+  source: AppDataSources | null;
+}
+
+export type FlightsAnalysisState = Pick<
+  FlightStateProperties,
+  'velocity' | 'true_track' | 'time_position' | 'baro_altitude' | 'vertical_rate'
+>;
+
+export interface AnalysisState {
+  [AppDataSources.OPEN_SKY_NETWORK]: FlightsAnalysisState[];
 }

@@ -1,7 +1,7 @@
 import { AppDataSources } from './../models/api';
 import { makeAutoObservable } from 'mobx';
 import { DrawerTabs } from '../models/ui';
-import { ExpandedState } from '../models/state';
+import { AnalyisDialogState, ExpandedState } from '../models/state';
 import { PaletteMode } from '@mui/material';
 
 class UIStore {
@@ -10,6 +10,11 @@ class UIStore {
   isDrawerOpened = false;
 
   drawerTab: DrawerTabs = DrawerTabs.LAYERS;
+
+  analysisDialogState: AnalyisDialogState = {
+    open: false,
+    source: null
+  };
 
   layerSettingsExpanded: ExpandedState = {
     [AppDataSources.OPEN_SKY_NETWORK]: false,
@@ -40,6 +45,20 @@ class UIStore {
 
   setDrawerTab(tab: DrawerTabs) {
     this.drawerTab = tab;
+  }
+
+  openAnalysisDialog(source: AppDataSources) {
+    this.analysisDialogState = {
+      open: true,
+      source
+    };
+  }
+
+  closeAnalysisDialog() {
+    this.analysisDialogState = {
+      open: false,
+      source: null
+    };
   }
 }
 

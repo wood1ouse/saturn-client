@@ -1,6 +1,7 @@
 export enum DrawerTabs {
   LAYERS = 'LAYERS',
-  HISTORICAL = 'HISTORICAL'
+  HISTORICAL = 'HISTORICAL',
+  ANALYSIS = 'ANALYSIS'
 }
 
 export type ConnectionStateColors = 'success' | 'warning' | 'error';

@@ -18,6 +18,9 @@ import { MapCursorState } from './models/state.ts';
 import { ActiveFlightPanel } from './app/ActiveFlightPanel/ActiveFlightPanel.tsx';
 import { Feature, Point } from 'geojson';
 
+import { AnalysisDialog } from './app/AnalysisDialog/AnalysisDialog.tsx';
+import AnalysisStore from './store/AnalysisStore.ts';
+
 function isPointFeature(
   feature: GeoJSON.Feature
 ): feature is Feature<Point, FlightStateProperties> {
@@ -34,6 +37,10 @@ function setCursor(cursor: MapCursorState) {
 
 function setActiveFlight(flight: Feature<Point, FlightStateProperties>) {
   FlightsStore.setActiveFlight(flight);
+}
+
+function resetFlightsData() {
+  AnalysisStore.resetFlightsData();
 }
 
 const App: React.FC = observer(() => {
@@ -86,9 +93,6 @@ const App: React.FC = observer(() => {
                   ? 'mapbox://styles/mapbox/dark-v11'
                   : 'mapbox://styles/mapbox/light-v11'
               }
-              onStyleData={() => {
-                console.log('LOADED');
-              }}
               interactiveLayerIds={['flights-layer']}
               onMouseEnter={(event) => {
                 const feature = event.features && event.features[0];
@@ -101,6 +105,7 @@ const App: React.FC = observer(() => {
                 const feature = event.features && event.features[0];
 
                 if (feature && isPointFeature(feature)) {
+                  resetFlightsData();
                   setActiveFlight(feature);
 
                   if (mapRef.current) {
@@ -120,6 +125,7 @@ const App: React.FC = observer(() => {
             </Map>
             <ActiveFlightPanel />
           </Box>
+          <AnalysisDialog />
         </LocalizationProvider>
       </ThemeProvider>
     </>
