@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 import { Card, Collapse, IconButton, Stack } from '@mui/material';
 import { StaticDateTimePicker } from '@mui/x-date-pickers';
@@ -16,6 +16,7 @@ import { AppDataSources } from '../../models/api';
 import UIStore from '../../store/UIStore';
 import HistoricalStore from '../../store/HistoricalStore';
 import { observer } from 'mobx-react';
+import { isDateAllowed, isTimeAllowed } from '../../utils/time';
 
 function toggleExpandDataSource(source: AppDataSources) {
   UIStore.toggleExpandDataSource(source);
@@ -48,29 +49,6 @@ export const HistoricalTabItem: React.FC<Props> = observer(
 
     const allowedMoments = timestamps.map((ts) => moment(ts));
 
-    const isDateAllowed = (date: Moment | null): boolean => {
-      if (!date) return false;
-      return allowedMoments.some((allowedDate) => allowedDate.isSame(date, 'day'));
-    };
-
-    const isTimeAllowed = (time: Moment | null, view: 'hours' | 'minutes' | 'seconds'): boolean => {
-      if (!time) return false;
-      return allowedMoments.some((allowedTime) => {
-        if (view === 'hours') {
-          return allowedTime.isSame(time, 'hour');
-        } else if (view === 'minutes') {
-          return allowedTime.isSame(time, 'hour') && allowedTime.isSame(time, 'minute');
-        } else if (view === 'seconds') {
-          return (
-            allowedTime.isSame(time, 'hour') &&
-            allowedTime.isSame(time, 'minute') &&
-            allowedTime.isSame(time, 'second')
-          );
-        }
-        return false;
-      });
-    };
-
     useEffect(() => {
       if (live) {
         const interval = setInterval(() => {
@@ -99,8 +77,8 @@ export const HistoricalTabItem: React.FC<Props> = observer(
             value={moment(time)}
             disabled={live}
             views={['day', 'hours', 'minutes', 'seconds']}
-            shouldDisableDate={(date) => !isDateAllowed(date)}
-            shouldDisableTime={(time, view) => !isTimeAllowed(time, view)}
+            shouldDisableDate={(date) => !isDateAllowed(allowedMoments, date)}
+            shouldDisableTime={(time, view) => !isTimeAllowed(allowedMoments, time, view)}
             disableFuture
             onAccept={async (value) => {
               if (value) {

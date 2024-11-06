@@ -18,14 +18,28 @@ import { StaticDateTimePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
 import AnalysisStore from '../../store/AnalysisStore';
 import { AppDataSources } from '../../models/api';
+import { isDateAllowed, isTimeAllowed } from '../../utils/time';
+import HistoricalStore from '../../store/HistoricalStore';
+import { FlightsAnalysisState } from '../../models/state';
+import { FlightsHistoricalAPI } from '../../api/FlightsHistroicalAPI';
 
 function closeAnalysisDialog() {
   UIStore.closeAnalysisDialog();
 }
 
+function addFlightsData(data: FlightsAnalysisState) {
+  AnalysisStore.addFlightsData(data);
+}
+
 export const AnalysisDialog: React.FC = observer(() => {
-  const [dateTime, setDateTime] = useState(Date.now());
+  const [dateTime, setDateTime] = useState(moment(Date.now()));
   const { getSourceData } = AnalysisStore;
+
+  const { source: getSourceHistoricalData } = HistoricalStore;
+
+  const { timestamps } = getSourceHistoricalData(AppDataSources.OPEN_SKY_NETWORK);
+
+  const allowedMoments = timestamps.map((ts) => moment(ts));
 
   const data = getSourceData(AppDataSources.OPEN_SKY_NETWORK);
 
@@ -44,8 +58,7 @@ export const AnalysisDialog: React.FC = observer(() => {
             minHeight: '70vh',
             minWidth: '80vw'
           }
-        }}
-      >
+        }}>
         <DialogTitle>{AnalysisService.getDialogTitleBySource(source)}</DialogTitle>
         <Stack direction="row" height="70vh" pt={7}>
           <ResponsiveContainer height="85%">
@@ -57,7 +70,6 @@ export const AnalysisDialog: React.FC = observer(() => {
               />
               <YAxis />
               <Tooltip />
-              baro_altitude
               <Legend />
               <Line type="monotone" name="Velocity" dataKey="velocity" stroke="#8884d8" />
               <Line type="monotone" name="True Track" dataKey="true_track" stroke="#82ca9d" />
@@ -74,13 +86,12 @@ export const AnalysisDialog: React.FC = observer(() => {
               value={moment(dateTime)}
               onChange={(value) => {
                 if (value) {
-                  setDateTime(value.unix());
+                  setDateTime(value);
                 }
               }}
-              //   disabled={live}
               views={['day', 'hours', 'minutes', 'seconds']}
-              //   shouldDisableDate={(date) => !isDateAllowed(date)}
-              //   shouldDisableTime={(time, view) => !isTimeAllowed(time, view)}
+              shouldDisableDate={(date) => !isDateAllowed(allowedMoments, date)}
+              shouldDisableTime={(time, view) => !isTimeAllowed(allowedMoments, time, view)}
               disableFuture
               sx={{
                 p: 0,
@@ -108,11 +119,23 @@ export const AnalysisDialog: React.FC = observer(() => {
               }}
             />
             <Container
-              onClick={() => {
-                console.log(new Date(dateTime));
+              onClick={async () => {
+                const timestamp = dateTime.unix() * 1000;
+
+                const result = await FlightsHistoricalAPI.getFlightPositionsForTime(timestamp);
+
+                const { velocity, true_track, time_position, baro_altitude, vertical_rate } =
+                  result.features[0].properties;
+
+                addFlightsData({
+                  velocity,
+                  true_track,
+                  time_position,
+                  baro_altitude,
+                  vertical_rate
+                });
               }}
-              sx={{ p: 4.5 }}
-            >
+              sx={{ p: 4.5 }}>
               <Button fullWidth variant="contained">
                 Add Timestamp
               </Button>
