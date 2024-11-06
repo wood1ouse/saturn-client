@@ -73,7 +73,11 @@ export const ActiveFlightPanel: React.FC = observer(() => {
                             key as keyof FlightStateProperties
                           )}
                         </TableCell>
-                        <TableCell align="right">{UIService.formatTableValue(value)}</TableCell>
+                        <TableCell align="right">
+                          {key === 'last_contact' || key === 'time_position'
+                            ? new Date(value * 1000).toLocaleTimeString()
+                            : UIService.formatTableValue(value)}
+                        </TableCell>
                       </TableRow>
                     ))}
               </TableBody>
