@@ -77,7 +77,8 @@ const App: React.FC = observer(() => {
               display: 'flex',
               width: '100vw',
               height: '100vh'
-            }}>
+            }}
+          >
             <MapDrawer />
             <Map
               ref={mapRef}
@@ -120,7 +121,8 @@ const App: React.FC = observer(() => {
               onMouseLeave={() => {
                 setCursor('grab');
               }}
-              cursor={cursor}>
+              cursor={cursor}
+            >
               <FlightsLayer />
             </Map>
             <ActiveFlightPanel />

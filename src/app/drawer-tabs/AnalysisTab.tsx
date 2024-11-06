@@ -26,7 +26,10 @@ export const AnalysisTab: React.FC = observer(() => {
             OpenSkyAPI Network
           </Stack>
 
-          <IconButton disabled={!activeFlight} onClick={() => openAnalysisDialog(AppDataSources.OPEN_SKY_NETWORK)}>
+          <IconButton
+            disabled={!activeFlight}
+            onClick={() => openAnalysisDialog(AppDataSources.OPEN_SKY_NETWORK)}
+          >
             <OpenInNewRoundedIcon />
           </IconButton>
         </Stack>

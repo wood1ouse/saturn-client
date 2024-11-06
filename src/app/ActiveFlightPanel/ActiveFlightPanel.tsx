@@ -35,7 +35,8 @@ export const ActiveFlightPanel: React.FC = observer(() => {
       in={!!activeFlight}
       timeout="auto"
       unmountOnExit
-      sx={{ position: 'absolute', bottom: 0, right: 0 }}>
+      sx={{ position: 'absolute', bottom: 0, right: 0 }}
+    >
       <Card sx={{ p: 1.5, width: px(280) }}>
         <Stack alignItems="center" justifyContent="space-between">
           <Stack direction="row" justifyContent="space-between" width="100%">
@@ -45,7 +46,8 @@ export const ActiveFlightPanel: React.FC = observer(() => {
               alignItems="center"
               gap={1.5}
               width="100%"
-              ml={5}>
+              ml={5}
+            >
               {activeFlight?.properties.icao.toUpperCase() || 'Unknown'}
               <Box
                 component="img"

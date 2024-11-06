@@ -9,8 +9,8 @@ export class UIService {
         return 'Layers';
       case DrawerTabs.HISTORICAL:
         return 'Manage Historical Data';
-        case DrawerTabs.ANALYSIS:
-          return 'Analysis Tool'
+      case DrawerTabs.ANALYSIS:
+        return 'Analysis Tool';
       default:
         return assertNever(tab);
     }
