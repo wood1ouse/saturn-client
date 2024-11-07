@@ -51,7 +51,8 @@ export const MapDrawer: React.FC = observer(() => {
           transition: '0.3s width',
           width: isDrawerOpened ? px(400) : px(64)
         }
-      }}>
+      }}
+    >
       <Stack direction="row">
         <ToggleButtonGroup value={drawerTab} orientation="vertical" sx={{ p: 1 }}>
           <ToggleButton value={DrawerTabs.LAYERS} onClick={() => handleTabClick(DrawerTabs.LAYERS)}>
@@ -59,12 +60,14 @@ export const MapDrawer: React.FC = observer(() => {
           </ToggleButton>
           <ToggleButton
             value={DrawerTabs.HISTORICAL}
-            onClick={() => handleTabClick(DrawerTabs.HISTORICAL)}>
+            onClick={() => handleTabClick(DrawerTabs.HISTORICAL)}
+          >
             <HistoryRoundedIcon />
           </ToggleButton>
           <ToggleButton
             value={DrawerTabs.ANALYSIS}
-            onClick={() => handleTabClick(DrawerTabs.ANALYSIS)}>
+            onClick={() => handleTabClick(DrawerTabs.ANALYSIS)}
+          >
             <InsightsIcon />
           </ToggleButton>
         </ToggleButtonGroup>
@@ -89,7 +92,8 @@ export const MapDrawer: React.FC = observer(() => {
           handleDrawerToggle(!isDrawerOpened);
         }}
         variant="outlined"
-        color="primary">
+        color="primary"
+      >
         {isDrawerOpened ? <ExpandLessRoundedIcon /> : <ExpandMoreRounded />}
       </CollapseButton>
       <ThemeButton onClick={toggleTheme}>

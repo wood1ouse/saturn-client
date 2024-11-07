@@ -47,7 +47,8 @@ export const SpatialObjectsDrawer: React.FC = observer(() => {
             transition: '0.3s width',
             width: isSpatialObjectsDrawerOpened ? px(320) : px(64)
           }
-        }}>
+        }}
+      >
         {isSpatialObjectsDrawerOpened && (
           <Stack justifyContent="center" alignItems="center" gap={1} pt={1.5}>
             {objects.map((obj) => (
@@ -58,7 +59,8 @@ export const SpatialObjectsDrawer: React.FC = observer(() => {
                   justifyContent="space-between"
                   alignItems="center"
                   gap={5}
-                  p={1.5}>
+                  p={1.5}
+                >
                   {SpatialObjectsService.getSpatialObjectIconByType(obj.feature)}
                   {(!!obj.edit && (
                     <TextField
@@ -90,7 +92,8 @@ export const SpatialObjectsDrawer: React.FC = observer(() => {
                           speed: 1
                         });
                       }
-                    }}>
+                    }}
+                  >
                     <CenterFocusStrongIcon />
                   </IconButton>
                 </Stack>
@@ -104,7 +107,8 @@ export const SpatialObjectsDrawer: React.FC = observer(() => {
             handleDrawerToggle(!isSpatialObjectsDrawerOpened);
           }}
           variant="outlined"
-          color="primary">
+          color="primary"
+        >
           {isSpatialObjectsDrawerOpened ? <ExpandMoreRounded /> : <ExpandLessRoundedIcon />}
         </CollapseButton>
       </Drawer>

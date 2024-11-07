@@ -39,7 +39,8 @@ export const ActiveFlightPanel: React.FC = observer(() => {
         position: 'absolute',
         bottom: 0,
         right: isSpatialObjectsDrawerOpened ? px(320) : px(64)
-      }}>
+      }}
+    >
       <Card sx={{ p: 1.5, width: px(280) }}>
         <Stack alignItems="center" justifyContent="space-between">
           <Stack direction="row" justifyContent="space-between" width="100%">
@@ -50,7 +51,7 @@ export const ActiveFlightPanel: React.FC = observer(() => {
               gap={1.5}
               width="100%"
               ml={5}
-              >
+            >
               {activeFlight?.properties.icao.toUpperCase() || 'Unknown'}
               <Box
                 component="img"

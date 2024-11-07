@@ -141,7 +141,8 @@ const App: React.FC = observer(() => {
               display: 'flex',
               width: '100vw',
               height: '100vh'
-            }}>
+            }}
+          >
             <Map
               ref={mapRef}
               mapboxAccessToken="pk.eyJ1Ijoid29vZGxvdXNlIiwiYSI6ImNsbzF5eXVhMzB1YnMya3A3NXQyZDRiOHIifQ.pxl9r8lSBJGi-OUu5dWVoQ"
@@ -183,7 +184,8 @@ const App: React.FC = observer(() => {
               onMouseLeave={() => {
                 setCursor('grab');
               }}
-              cursor={cursor}>
+              cursor={cursor}
+            >
               <FlightsLayer />
 
               <DrawControl

@@ -58,7 +58,8 @@ export const AnalysisDialog: React.FC = observer(() => {
             minHeight: '70vh',
             minWidth: '80vw'
           }
-        }}>
+        }}
+      >
         <DialogTitle>{AnalysisService.getDialogTitleBySource(source)}</DialogTitle>
         <Stack direction="row" height="70vh" pt={7}>
           <ResponsiveContainer height="85%">
@@ -135,7 +136,8 @@ export const AnalysisDialog: React.FC = observer(() => {
                   vertical_rate
                 });
               }}
-              sx={{ p: 4.5 }}>
+              sx={{ p: 4.5 }}
+            >
               <Button fullWidth variant="contained">
                 Add Timestamp
               </Button>
