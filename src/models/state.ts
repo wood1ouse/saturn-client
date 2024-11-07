@@ -1,6 +1,6 @@
 import { ReadyState } from 'react-use-websocket';
 import { AppDataSources, FlightStateProperties } from './api.ts';
-import { FeatureCollection } from 'geojson';
+import { Feature, FeatureCollection } from 'geojson';
 
 export interface DataSourceState {
   enabled: boolean;
@@ -46,4 +46,10 @@ export type FlightsAnalysisState = Pick<
 
 export interface AnalysisState {
   [AppDataSources.OPEN_SKY_NETWORK]: FlightsAnalysisState[];
+}
+
+export interface SpatialObject {
+  name: string;
+  edit: boolean;
+  feature: Feature;
 }

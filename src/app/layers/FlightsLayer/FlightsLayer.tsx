@@ -103,7 +103,7 @@ export const FlightsLayer: React.FC = observer(() => {
       id="flight-data"
       type="geojson"
       data={live && flightsState ? flightsState.geojson : historicalGeojson}
-    >
+      >
       <Layer
         id="flights-layer"
         type="symbol"

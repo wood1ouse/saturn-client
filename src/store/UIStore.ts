@@ -9,6 +9,8 @@ class UIStore {
 
   isDrawerOpened = false;
 
+  isSpatialObjectsDrawerOpened = false;
+
   drawerTab: DrawerTabs = DrawerTabs.LAYERS;
 
   analysisDialogState: AnalyisDialogState = {
@@ -41,6 +43,10 @@ class UIStore {
 
   setIsDrawerOpened(value: boolean) {
     this.isDrawerOpened = value;
+  }
+
+  setIsSpatialObjectsDrawerOpened(value: boolean) {
+    this.isSpatialObjectsDrawerOpened = value;
   }
 
   setDrawerTab(tab: DrawerTabs) {
