@@ -2,7 +2,7 @@ import axios from 'axios';
 import { FeatureCollection, Point } from 'geojson';
 import { FlightStateProperties } from '../models/api';
 
-const FLIGHTS_HISTORICAL_SERVICE_ADDR = 'http://localhost:3003';
+const FLIGHTS_HISTORICAL_SERVICE_ADDR = 'http://3.79.123.70:3003';
 
 export class FlightsHistoricalAPI {
   static async getTimestamps(): Promise<number[]> {

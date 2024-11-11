@@ -23,6 +23,7 @@
     "@types/mapbox-gl": "^3.4.0",
     "axios": "^1.7.7",
     "geojson": "^0.5.0",
+    "interpolateheatmaplayer": "^1.6.2",
     "mapbox-gl": "^3.7.0",
     "mobx": "^6.13.5",
     "mobx-react": "^9.1.1",

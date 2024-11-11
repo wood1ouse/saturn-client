@@ -3,6 +3,7 @@ import { makeAutoObservable, reaction } from 'mobx';
 import { Feature, FeatureCollection, Point } from 'geojson';
 import { AppDataSources, FlightStateProperties } from '../models/api';
 import HistoricalStore from './HistoricalStore';
+import MapStore from './MapStore';
 
 class FlightsStore {
   activeFlight: Feature<Point, FlightStateProperties> | null = null;
@@ -22,7 +23,10 @@ class FlightsStore {
         (feature) => feature.properties.icao === currentFlight.properties.icao
       );
 
-      if (active) this.activeFlight = active;
+      if (active) {
+        MapStore.flyTo([active.geometry.coordinates[0], active.geometry.coordinates[1]], 6, 1);
+        this.activeFlight = active;
+      }
     }
   }
 

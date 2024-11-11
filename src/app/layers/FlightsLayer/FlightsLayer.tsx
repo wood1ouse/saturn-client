@@ -15,7 +15,7 @@ import HistoricalStore from '../../../store/HistoricalStore';
 import FlightsStore from '../../../store/FlightsStore';
 import UIStore from '../../../store/UIStore';
 
-const WS_URL = 'ws://localhost:8080';
+const WS_URL = 'ws://3.79.123.70:8080';
 
 function setActiveFlight(flight: Feature<Point, FlightStateProperties>) {
   FlightsStore.setActiveFlight(flight);
@@ -102,8 +102,7 @@ export const FlightsLayer: React.FC = observer(() => {
     <Source
       id="flight-data"
       type="geojson"
-      data={live && flightsState ? flightsState.geojson : historicalGeojson}
-    >
+      data={live && flightsState ? flightsState.geojson : historicalGeojson}>
       <Layer
         id="flights-layer"
         type="symbol"

@@ -1,5 +1,5 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
-import Map, { MapRef } from 'react-map-gl';
+import Map, { MapboxMap, MapRef } from 'react-map-gl';
 import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import { darkTheme, lightTheme } from './theme';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -27,11 +27,16 @@ import { SpatialObjectsDrawer } from './app/drawers/SpatialObjectsDrawer/Spatial
 import { css, Global } from '@emotion/react';
 import { px } from './utils/ui.ts';
 import { SpatialObjectsService } from './services/SpatialObjectsService.tsx';
+import { WeatherLayer } from './app/layers/WeatherLayer/WeatherLayer.tsx';
 
 function isPointFeature(
   feature: GeoJSON.Feature
 ): feature is Feature<Point, FlightStateProperties> {
   return feature.geometry && feature.geometry.type === 'Point';
+}
+
+function setMap(map: MapboxMap) {
+  MapStore.setMap(map);
 }
 
 function setTimestamps(source: AppDataSources, value: number[]) {
@@ -141,8 +146,7 @@ const App: React.FC = observer(() => {
               display: 'flex',
               width: '100vw',
               height: '100vh'
-            }}
-          >
+            }}>
             <Map
               ref={mapRef}
               mapboxAccessToken="pk.eyJ1Ijoid29vZGxvdXNlIiwiYSI6ImNsbzF5eXVhMzB1YnMya3A3NXQyZDRiOHIifQ.pxl9r8lSBJGi-OUu5dWVoQ"
@@ -154,9 +158,12 @@ const App: React.FC = observer(() => {
               style={{ width: '100%', height: '100%' }}
               mapStyle={
                 themeMode === 'dark'
-                  ? 'mapbox://styles/mapbox/dark-v11'
-                  : 'mapbox://styles/mapbox/light-v11'
+                  ? 'mapbox://styles/mapbox/dark-v10'
+                  : 'mapbox://styles/mapbox/light-v10'
               }
+              onLoad={({ target }) => {
+                setMap(target);
+              }}
               interactiveLayerIds={['flights-layer']}
               onMouseEnter={(event) => {
                 const feature = event.features && event.features[0];
@@ -184,9 +191,9 @@ const App: React.FC = observer(() => {
               onMouseLeave={() => {
                 setCursor('grab');
               }}
-              cursor={cursor}
-            >
+              cursor={cursor}>
               <FlightsLayer />
+              <WeatherLayer />
 
               <DrawControl
                 position="top-right"
